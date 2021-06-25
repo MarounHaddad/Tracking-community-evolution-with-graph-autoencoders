@@ -8,15 +8,29 @@ Network data structures are a natural choice for modeling the relationships betw
 While detecting high quality communities in a static network remains a challenging task by itself, tracking the changes of these communities over time offers a new and unique set of problems. Over the past two decades different techniques have been developed in order to tackle this task and different approaches were proposed based on varying assumptions on the nature of the evolution of the clusters, each with its advantages and limitations. However, in this study we adopt the method of slicing the of the evolutionary history of the graph into multiple snapshots that are called time-steps and then generating community sequences by matching clusters from different time-steps. Each sequence of matching clusters represent the life-cycle of a single evolving community. This methode is generally referred to in litterature as Independent community detection and matching []. 
 
 <p align="center">
-  <img width="300" height="400" src="https://github.com/MarounHaddad/Restaurant-recommendation-with-augmented-relational-graph-neural-networks/blob/main/images/data%20augementation.png">
+  <img width="50%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/Tracking.png">
 </p>
  <p align="center"><em>Figure 2 - Data augmentation example for the 4 stars edges.</em></p>
 
-Figure 1 displays an example of cluster sequences generated on a dynamic graph of three timesteps. As the example shows, multiple 
-
+Figure 1 displays an example of cluster sequences generated on a dynamic graph of three timesteps. As the example shows, multiple combinations of sequences are possible for the same lifecycle of the graph. Finding the sequence that is most representative of the evolving cluster is the main challenge of the cluster tracking task. Furthermore, we notice that it is possible to define events on the evolving sequences. In this work, we identif 8 different events that can occure on the sequence:  
+1. Birth: The sequence starts in this timestep
+2. Death: The sequence ends in this timestep (Has not clusters that belong to this timestep)
+3. Shrinking: The number of nodes in the sequence of the current timestep is less than number of nodes in the sequence of the previous timestep.
+4. Growing: The number of nodes in the sequence of the current timestep is larger than number of nodes in the sequence of the previous timestep.
+5. Splitting: The number of clusters in the sequence of the current timestep is larger than number of clusters in the sequence of the previous timestep.
+6. Merging: The number of clusters in the sequence of the current timestep is less than number of clusters in the sequence of the previous timestep.
+7. Continuing: The same number of clusters and nodes in sequence of the previous timestep is maintained in the current timestep.
+8. Resurgence: A sequence dies and is missing for some timesteps and then is reborn again.
 
 ## Motivation
 
+Over the past decade multiple techniques for  Independent community detection and matching were introduced in litterature. However, the majority of these techniques rely on node membership to perform the matching of the clusters from different timesteps. Green et al. [], is one of the earliest techniques. They relied on the Jaccard Index to match the clusters. In other words, if the Jaccard Index of two clusters from different timesteps is higher than a certain manually defined similarity threshold the clusters are placed in the same sequence. However, looking at the node membership alone might not be sufficient to properly represent the changes in the cluster. Take for example the image in row two of Figure 2.  
+
+
+<p align="center">
+  <img width="50%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/Tracking.png">
+</p>
+ <p align="center"><em>Figure 2 - Data augmentation example for the 4 stars edges.</em></p>
 
 ## Methodolody
 
@@ -26,10 +40,15 @@ Figure 1 displays an example of cluster sequences generated on a dynamic graph o
 
 ## Evaluation of Sequences
 
+## Benchmarks
+
+## Preliminary results
+
 ## Conclusion
 
 ## References
 
 ## Note
-This work is part of a preliminary reseach on dynamic graphs done at UQAM (University of Quebec at Montreal) under the supervision of Dr. Mohamad Bouguessa.
+This work is part of a preliminary reseach on dynamic graphs done at UQAM (University of Quebec at Montreal) under the supervision of Dr. Mohamad Bouguessa.  
+  
 Maroun Haddad 2020.
