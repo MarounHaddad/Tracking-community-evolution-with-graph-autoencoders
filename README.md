@@ -3,9 +3,9 @@ In this preliminary work, we apply deep learning on graphs for the task of clust
 
 ## Problem definition
 
-Network data structures are a natural choice for modeling the relationships between interacting entities in a multitude of domains. Although many tools from graph theory are employed to extract information from these networks, clustering or community detection remains a key component for obtaining  meaningful insights about their underlying patterns. However, most studies concentrate on community detection in a static network, while real-world networks are dynamic in nature. This dynamism leads to changes in the structure and content of the networks which entails changes in their internal communities. Tracking and analysing the behaviour of these communities as they evolve over time is a crucial task in many fields of study that are interested in the dynamics of groups rather than the individuals, such as modeling the immune response to a virus in a population [] or group interactions in social networks [].
+Network data structures are a natural choice for modeling the relationships between interacting entities in a multitude of domains. Although many tools from graph theory are employed to extract information from these networks, clustering or community detection remains a key component for obtaining  meaningful insights about their underlying patterns. However, most studies concentrate on community detection in a static network, while real-world networks are dynamic in nature. This dynamism leads to changes in the structure and content of the networks which entails changes in their internal communities. Tracking and analysing the behaviour of these communities as they evolve over time is a crucial task in many fields of study that are interested in the dynamics of groups rather than the individuals, such as modeling the immune response to a virus in a population or group interactions in social networks.
 
-While detecting high quality communities in a static network remains a challenging task by itself, tracking the changes of these communities over time offers a new and unique set of problems. Over the past two decades different techniques have been developed in order to tackle this task and different approaches were proposed based on varying assumptions on the nature of the evolution of the clusters, each with its advantages and limitations. However, in this study we adopt the method of slicing the of the evolutionary history of the graph into multiple snapshots that are called time-steps and then generating community sequences by matching clusters from different time-steps. Each sequence of matching clusters represent the life-cycle of a single evolving community. This methode is generally referred to in litterature as Independent community detection and matching []. 
+While detecting high-quality communities in a static network remains a challenging task by itself, tracking the changes of these communities over time offers a new and unique set of problems. Over the past two decades, different techniques have been developed in order to tackle this task and different approaches were proposed based on varying assumptions on the nature of the evolution of the clusters, each with its advantages and limitations. However, in this study, we adopt the method of slicing the evolutionary history of the graph into multiple snapshots that are called time-steps and then generating community sequences by matching clusters from different time-steps. Each sequence of matching clusters represents the life cycle of a single evolving community. This method is generally referred to in the literature as Independent community detection and matching []. 
 
 <p align="center">
   <img width="65%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/Tracking.png">
@@ -40,14 +40,39 @@ Over the years multiple techniques were introduced in the literature for indepen
  
 In order to capture all 
 ## TrackGAE Pretrain
-
+<p align="center">
+  <img width="65%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/TrackGAE%20Pretrain.png">
+</p>
+ <p align="center"><em>Figure 4 - TrackGAE pretraining architecture (Step-1), used to generate clusters embeddings.</em></p>
+ 
 ## TrackGAE Generate Sequences
+<p align="center">
+  <img width="65%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/TrackGAE%20Track.png">
+</p>
+ <p align="center"><em>Figure 5 - TrackGAE tracking architecture (Step-2), used to generate the sequences.</em></p>
 
+<p align="center">
+  <img width="50%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/pruning.gif">
+</p>
+ <p align="center"><em>Figure 6 - A pruning/reinforcement example.</em></p>
+ 
+ 
 ## Evaluation of Sequences
-
+<p align="center">
+  <img width="60%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/evaluation.png">
+</p>
+ <p align="center"><em>Figure 7 - The sequence evaluation metrics should penalize the malformed sequences.</em></p>
+ 
 ## Benchmarks
 
 ## Preliminary results
+<p align="center">
+<img  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/example1.png">
+</p>
+ 
+<p align="center">
+<img   src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/example2.png">
+</p>
 
 ## Conclusion
 
