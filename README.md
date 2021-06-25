@@ -10,27 +10,26 @@ While detecting high quality communities in a static network remains a challengi
 <p align="center">
   <img width="50%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/Tracking.png">
 </p>
- <p align="center"><em>Figure 2 - Data augmentation example for the 4 stars edges.</em></p>
+ <p align="center"><em>Figure 1 - Example of cluster tracking in a dynamic network.</em></p>
 
-Figure 1 displays an example of cluster sequences generated on a dynamic graph of three timesteps. As the example shows, multiple combinations of sequences are possible for the same lifecycle of the graph. Finding the sequence that is most representative of the evolving cluster is the main challenge of the cluster tracking task. Furthermore, we notice that it is possible to define events on the evolving sequences. In this work, we identif 8 different events that can occure on the sequence:  
-1. Birth: The sequence starts in this timestep
-2. Death: The sequence ends in this timestep (Has not clusters that belong to this timestep)
-3. Shrinking: The number of nodes in the sequence of the current timestep is less than number of nodes in the sequence of the previous timestep.
-4. Growing: The number of nodes in the sequence of the current timestep is larger than number of nodes in the sequence of the previous timestep.
-5. Splitting: The number of clusters in the sequence of the current timestep is larger than number of clusters in the sequence of the previous timestep.
-6. Merging: The number of clusters in the sequence of the current timestep is less than number of clusters in the sequence of the previous timestep.
-7. Continuing: The same number of clusters and nodes in sequence of the previous timestep is maintained in the current timestep.
+Figure 1 displays an example of cluster sequences generated on a dynamic graph of three timesteps. As the example shows, multiple combinations of sequences are possible for the same lifecycle of the graph. Finding the sequence that is most representative of the evolving cluster is the main challenge of the cluster tracking task. Furthermore, we notice that it is possible to define events on the evolving sequences. In this work, we identify 8 different events that can occur on the sequence:  
+1. Birth: The sequence starts in this timestep.
+2. Death: The sequence ends in this timestep (Has not clusters that belong to this timestep).
+3. Shrinking: The number of nodes in the sequence of the current timestep is less than the number of nodes in the sequence of the previous timestep.
+4. Growing: The number of nodes in the sequence of the current timestep is larger than the number of nodes in the sequence of the previous timestep.
+5. Splitting: The number of clusters in the sequence of the current timestep is larger than the number of clusters in the sequence of the previous timestep.
+6. Merging: The number of clusters in the sequence of the current timestep is less than the number of clusters in the sequence of the previous timestep.
+7. Continuing: The same number of clusters and nodes in the sequence of the previous timestep is maintained in the current timestep.
 8. Resurgence: A sequence dies and is missing for some timesteps and then is reborn again.
 
 ## Motivation
 
-Over the past decade multiple techniques for  Independent community detection and matching were introduced in litterature. However, the majority of these techniques rely on node membership to perform the matching of the clusters from different timesteps. Green et al. [], is one of the earliest techniques. They relied on the Jaccard Index to match the clusters. In other words, if the Jaccard Index of two clusters from different timesteps is higher than a certain manually defined similarity threshold the clusters are placed in the same sequence. However, looking at the node membership alone might not be sufficient to properly represent the changes in the cluster. Take for example the image in row two of Figure 2.  
-
+Over the years multiple techniques were introduced in litterature for independent community detection and matching. However, the majority of these methods rely on node membership to perform the matching of the clusters from different timesteps. Green et al. [], one of the earliest techniques, relied on the Jaccard Index as a similarity measure. In this method, the Jaccard index is claculated between the last cluster of each sequence (the fronts) and every cluster in the current timestep. If the Jaccard Index of two clusters is higher than a certain manually defined similarity threshold the clusters are placed in the same sequence. However, looking at the node membership alone might not be sufficient to properly represent the changes in the cluster. Take for example the image in row two of Figure 2. Two clusters from different timesteps can have exactly the same nodes, however the internal structure of the clusters is completely different. The same can be observed in row three of Figure 2. Two clusters from different timesteps can have exactly the same nodes and same structure, however the attributes on the nodes have completely changed from timestep to antoher. In these two cases, can we consider these clusters as the same evolving cluster? or should they be seperated into different sequences? We beleive a reliable tracking algorithm should take all three caractreesityqs in 
 
 <p align="center">
-  <img width="50%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/Tracking.png">
+  <img width="50%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/motivation.png">
 </p>
- <p align="center"><em>Figure 2 - Data augmentation example for the 4 stars edges.</em></p>
+ <p align="center"><em>Figure 2 - Three caracteristics to be evaluated for cluster matching.</em></p>
 
 ## Methodolody
 
