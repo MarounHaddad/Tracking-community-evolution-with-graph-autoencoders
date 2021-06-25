@@ -1,5 +1,5 @@
 # Tracking community evolution with graph autoencoders
-In this preliminary work, we apply deep learning on graphs for the task of cluster tracking in dynamic networks. While most cluster tracking methods rely on node membership to track the clusters from different timesteps, in our work we look at all three characteristics when performing the tracking: node membership, node attributes, and cluster structure. Our method is comprised of two steps. First, we generate representative embeddings of the clusters using Graph Neural Networks supplemented with GRUs for temporal learning. Next, we build an attributed, weighted Supergraph out of the clusters. In the Supergraph the nodes are the clusters, the edge-weights are the number of nodes shared between the clusters, and the attributes are the cluster embeddings generated in the first step. Subsequently, we transform the problem of cluster tracking into a clustering task on the Supergraph, where each cluster represents a sequence of clusters. In the second step, we apply a graph autoencoder (TrackGAE) on the Supergraph. TrackGAE is supplemented with a novel pruning mechanism that detaches the weak inter-sequence edges and reinforces the intra-sequence edges in the Supergraph. Finally, Finch, an agglomerative clustering algorithm is applied on the representations of TrackGAE in order to generate the sequences.
+In this preliminary work, we apply deep learning on graphs for the task of cluster tracking in dynamic networks. While most cluster tracking methods rely on node membership to track the clusters from different timesteps, in our work we look at all three characteristics when performing the tracking: node membership, cluster attributes, and cluster structure. Our method is comprised of two steps. First, we generate representative embeddings of the clusters using Graph Neural Networks supplemented with GRUs for temporal learning. Next, we build an attributed, weighted Supergraph out of the clusters. In the Supergraph the nodes are the clusters, the edge-weights are the number of nodes shared between the clusters, and the attributes are the cluster embeddings generated in the first step. Subsequently, we transform the problem of cluster tracking into a clustering task on the Supergraph, where each cluster represents a sequence of clusters. In the second step, we apply a graph autoencoder (TrackGAE) on the Supergraph. TrackGAE is supplemented with a novel pruning mechanism that detaches the weak inter-sequence edges and reinforces the intra-sequence edges in the Supergraph. Finally, Finch, an agglomerative clustering algorithm is applied on the representations of TrackGAE in order to generate the sequences.
 
 ## Problem definition
 
@@ -8,7 +8,7 @@ Network data structures are a natural choice for modeling the relationships betw
 While detecting high quality communities in a static network remains a challenging task by itself, tracking the changes of these communities over time offers a new and unique set of problems. Over the past two decades different techniques have been developed in order to tackle this task and different approaches were proposed based on varying assumptions on the nature of the evolution of the clusters, each with its advantages and limitations. However, in this study we adopt the method of slicing the of the evolutionary history of the graph into multiple snapshots that are called time-steps and then generating community sequences by matching clusters from different time-steps. Each sequence of matching clusters represent the life-cycle of a single evolving community. This methode is generally referred to in litterature as Independent community detection and matching []. 
 
 <p align="center">
-  <img width="50%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/Tracking.png">
+  <img width="65%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/Tracking.png">
 </p>
  <p align="center"><em>Figure 1 - Example of cluster tracking in a dynamic network.</em></p>
 
@@ -24,15 +24,21 @@ Figure 1 displays an example of cluster sequences generated on a dynamic graph o
 
 ## Motivation
 
-Over the years multiple techniques were introduced in litterature for independent community detection and matching. However, the majority of these methods rely on node membership to perform the matching of the clusters from different timesteps. Green et al. [], one of the earliest techniques, relied on the Jaccard Index as a similarity measure. In this method, the Jaccard index is claculated between the last cluster of each sequence (the fronts) and every cluster in the current timestep. If the Jaccard Index of two clusters is higher than a certain manually defined similarity threshold the clusters are placed in the same sequence. However, looking at the node membership alone might not be sufficient to properly represent the changes in the cluster. Take for example the image in row two of Figure 2. Two clusters from different timesteps can have exactly the same nodes, however the internal structure of the clusters is completely different. The same can be observed in row three of Figure 2. Two clusters from different timesteps can have exactly the same nodes and same structure, however the attributes on the nodes have completely changed from timestep to antoher. In these two cases, can we consider these clusters as the same evolving cluster? or should they be seperated into different sequences? We beleive a reliable tracking algorithm should take all three caractreesityqs in 
-
 <p align="center">
   <img width="50%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/motivation.png">
 </p>
  <p align="center"><em>Figure 2 - Three caracteristics to be evaluated for cluster matching.</em></p>
+ 
+Over the years multiple techniques were introduced in the literature for independent community detection and matching. However, the majority of these methods rely on node membership to perform the matching of the clusters from different timesteps. Green et al. [], one of the earliest techniques, relied on the Jaccard Index as a similarity measure. In this method, the Jaccard index is calculated between the last cluster of each sequence (the fronts) and every cluster in the current timestep. If the Jaccard Index of two clusters is higher than a certain manually defined similarity threshold the clusters are placed in the same sequence. However, looking at the node membership alone might not be sufficient to properly represent the changes in the cluster. Take for example the image in row two of Figure 2. Two clusters from different timesteps can have the same nodes, however, the internal structure of the clusters is completely different. The same can be observed in row three of Figure 2. Two clusters from different timesteps can have the same nodes and same structure, however, the attributes on the nodes have completely changed from one timestep to another. In these two cases, can we consider these clusters as the same evolving cluster? or should they be separated into different sequences? We believe a reliable tracking algorithm should consider all three characteristics: node membership, cluster structure, and cluster attributes. 
+
 
 ## Methodolody
-
+<p align="center">
+  <img width="75%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/TrackGAE%20cycle.png">
+</p>
+ <p align="center"><em>Figure 3 - A two-step cycle of TrackGAE</em></p>
+ 
+In order to capture all 
 ## TrackGAE Pretrain
 
 ## TrackGAE Generate Sequences
