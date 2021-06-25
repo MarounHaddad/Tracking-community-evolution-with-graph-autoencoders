@@ -7,7 +7,10 @@ Network data structures are a natural choice for modeling the relationships betw
 
 While detecting high quality communities in a static network remains a challenging task by itself, tracking the changes of these communities over time offers a new and unique set of problems. Over the past two decades different techniques have been developed in order to tackle this task and different approaches were proposed based on varying assumptions on the nature of the evolution of the clusters, each with its advantages and limitations. However, in this study we adopt the method of slicing the of the evolutionary history of the graph into multiple snapshots that are called time-steps and then generating community sequences by matching clusters from different time-steps. Each sequence of matching clusters represent the life-cycle of a single evolving community. This methode is generally referred to in litterature as Independent community detection and matching []. 
 
-
+<p align="center">
+  <img width="300" height="400" src="https://github.com/MarounHaddad/Restaurant-recommendation-with-augmented-relational-graph-neural-networks/blob/main/images/data%20augementation.png">
+</p>
+ <p align="center"><em>Figure 2 - Data augmentation example for the 4 stars edges.</em></p>
 
 Figure 1 displays an example of cluster sequences generated on a dynamic graph of three timesteps. As the example shows, multiple 
 
