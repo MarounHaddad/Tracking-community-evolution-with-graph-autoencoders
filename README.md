@@ -38,7 +38,7 @@ Over the years multiple techniques were introduced in the literature for indepen
 </p>
  <p align="center"><em>Figure 3 - A two-step cycle of TrackGAE</em></p>
  
-Our method consists of two main steps. However, first, we start by building a Supergraph out of the clusters from the different timesteps. In order to build the Supergraph, we generate the Burt matrix (B). The Burt Matrix indicates the number of nodes shared between the clusters. The diagonal of the Burt Matrix indicates the number of nodes per cluster. The Burt matrix is built by simply multiplying the Membership matrix (A) with its transpose. The membership matrix is a binary matrix that indicates whether a node belongs to a cluster or not. The main insight of this work is that the Burt matrix can be considered as an adjacency matrix for a weighted Supergraph, where the nodes are the clusters and the edge-weights indicate the number of shared nodes between the clusters. We transform the problem of generating the sequences of clusters as a clustering task on the Supergraph.  
+Our method consists of two main steps  1) Pretraining and 2) Tracking. However, first, we start by building a Supergraph out of the clusters from the different timesteps. In order to build the Supergraph, we generate the Burt matrix (B). The Burt Matrix indicates the number of nodes shared between the clusters. The diagonal of the Burt Matrix indicates the number of nodes per cluster. The Burt matrix is built by simply multiplying the Membership matrix (A) with its transpose. The membership matrix is a binary matrix that indicates whether a node belongs to a cluster or not. The main insight of this work is that the Burt matrix can be considered as an adjacency matrix for a weighted Supergraph, where the nodes are the clusters and the edge-weights indicate the number of shared nodes between the clusters. We transform the problem of generating the sequences of clusters as a clustering task on the Supergraph.  
 
 After building the Supergraph, we start with the first step: Pretraining. In this step, we generate representations for the clusters using temporal graph autoencoders applied on each timestep. The cluster embeddings are then used as attributes on the Supergraph. In the second step, denoted Tracking, a graph autoencoder (GAE), supplemented with a pruning mechanism, is trained on the Supergraph in order to generate the sequences. Figure 3 details the different steps of the TrackGAE framework.  
 
@@ -48,6 +48,12 @@ After building the Supergraph, we start with the first step: Pretraining. In thi
 </p>
  <p align="center"><em>Figure 4 - TrackGAE pretraining architecture (Step-1), used to generate clusters embeddings.</em></p>
  
+In the pretraining step, N Graph autoencoders are trained on the N timesteps to generate the embeddings of the nodes. The encoder section of the GAE is formed of two layers that use the SUM aggregation rule with a size of 64. The hyperbolic tangent function (Tanh) is used on the hidden layers. The embedding H is formed by concatenating the outputs of the first and second layers. The output of the GAE from the previous timestep is passed through a GRU (Gated Recurrent Unit) with the output of GAE of the current timestep to form the embedding Z such as Z<sub>n</sub> = GRU(Z<sub>n-1</sub>, H<sub>n</sub>).  
+
+The Decoder side of the GAE performs three tasks: Reconstruct the adjacency matrix, reconstruct the attributes matrix, and classify the nodes according to their cluster membership. The purpose is to capture all three characteristics in the embeddings, that is node membership, node attributes, and graph structure.  We train the models in parallel on 200 epochs with a patience of 10 for early stopping.  
+
+To form the embeddings of the clusters, we aggregate the mean of the embeddings of the nodes that form each cluster according to the timestep of the cluster. We finally stack all the cluster embeddings to form the attributes of the Supergraph to be used in the second step.  
+
 ## TrackGAE Generate Sequences
 <p align="center">
   <img width="65%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/TrackGAE%20Track.png">
