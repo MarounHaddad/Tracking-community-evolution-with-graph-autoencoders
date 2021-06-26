@@ -42,7 +42,7 @@ Our method consists of two main steps  1) Pretraining and 2) Tracking. However, 
 
 After building the Supergraph, we start with the first step: Pretraining. In this step, we generate representations for the clusters using temporal graph autoencoders applied on each timestep. The cluster embeddings are then used as attributes on the Supergraph. In the second step, denoted Tracking, a graph autoencoder (GAE), supplemented with a pruning mechanism, is trained on the Supergraph in order to generate the sequences. Figure 3 details the different steps of the TrackGAE framework.  
 
-## TrackGAE Pretrain
+## Step 1 - Pretrain
 <p align="center">
   <img width="65%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/TrackGAE%20Pretrain.png">
 </p>
@@ -54,11 +54,26 @@ The Decoder side of the GAE performs three tasks: Reconstruct the adjacency matr
 
 To form the embeddings of the clusters, we aggregate the mean of the embeddings of the nodes that form each cluster according to the timestep of the cluster. We finally stack all the cluster embeddings to form the attributes of the Supergraph to be used in the second step.  
 
-## TrackGAE Generate Sequences
+## Step 2 - Generate Sequences
 <p align="center">
   <img width="65%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/TrackGAE%20Track.png">
 </p>
  <p align="center"><em>Figure 5 - TrackGAE tracking architecture (Step-2), used to generate the sequences.</em></p>
+
+
+In the second step, we apply a graph autoencoder (TrackGAE) on the Supergraph built at the start. We use the embeddings of the clusters generated in the first step as attributes on the nodes of the Supergraph. The encoder section of TrackGAE is formed of two GNN layers that use the SUM aggregation rule. However, when we aggregate the messages of the neighbors, we multiply them with the weight on the edges:
+<p align="center">
+  <img width="20%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/aggregationrule.png">
+</p>
+ 
+The layers have a size of 64 and we use the hyperbolic tangent function (Tanh)  as an activation function. The embedding is formed by concatenating the output of the first and second layers of the encoder. The decoder reconstructs the adjacency matrix by multiplying the embedding with its transpose and applying a sigmoid element-wise.  
+ 
+We notice in the supergraph that due to the node migrating from cluster to cluster between timesteps, the Supergraph has a lot of edges that represent minor interactions between the clusters. The red lines in Figure56 represent the inter-sequence edges. If we can detach these inter-sequence edges, we can retrieve better representative sequences. To achieve this goal, we supplement the TrackGAE with a pruning mechanism:  
+<p align="center">
+  <img width="35%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/pruningrule.png">
+</p>
+
+In every epoch, we sample a random percentage of the edges in the Supergraph. We calculate the distance between the embeddings of the two nodes of the edge. the log of the distance is then subtracted from the weight on the edge. If the distance is larger than 1, then the weight on the edge will be reduced, and eventually, if the weight is <=0, we detach the edge. However, if the distance is less than 1 then the result of the log is negative and the weight will increase, reinforcing the connection. Figure 6 represents a mockup example of the pruning and reinforcement operations during the training.  
 
 <p align="center">
   <img width="50%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/pruning.gif">
