@@ -6,7 +6,7 @@ Motivated by these advancements, we propose TrackGAE, a Graph Neural Network fra
 
 Network data structures are a natural choice for modeling the relationships between interacting entities in a multitude of domains. Although many tools from graph theory are employed to extract information from these networks, clustering or community detection remains a key component for obtaining meaningful insights about their underlying patterns. However, most studies concentrate on community detection in a static network, while real-world networks are dynamic by nature. This dynamism leads to changes in the structure and content of the networks which entails changes in their internal communities. Tracking and analyzing the behavior of these communities as they evolve is a crucial task in many fields of study that are interested in the dynamics of groups rather than the individuals, such as modeling the immune response to a virus in a population or group interactions in social networks.  
 
-While detecting high-quality communities in a static network remains a challenging task by itself, tracking the changes of these communities over time offers a new and unique set of problems. Over the past two decades, different techniques have been developed in order to tackle this task and different approaches were proposed based on varying assumptions on the nature of the evolution of the clusters, each with its advantages and limitations. However, in this study, we adopt the method of slicing the evolutionary history of the graph into multiple snapshots that are called time-steps and then generating community sequences by matching clusters from different time-steps. Each sequence of matching clusters represents the life cycle of a single evolving community. This method is generally referred to in the literature as Independent community detection and matching [].  
+While detecting high-quality communities in a static network remains a challenging task by itself, tracking the changes of these communities over time offers a new and unique set of problems. Over the past two decades, different techniques have been developed in order to tackle this task and different approaches were proposed based on varying assumptions on the nature of the evolution of the clusters, each with its advantages and limitations. However, in this study, we adopt the method of slicing the evolutionary history of the graph into multiple snapshots that are called time-steps and then generating community sequences by matching clusters from different time-steps. Each sequence of matching clusters represents the life cycle of a single evolving community. This method is generally referred to in the literature as Independent community detection and matching [4].  
 
 <p align="center">
   <img width="65%"  src="https://github.com/MarounHaddad/Tracking-community-evolution-with-graph-autoencoders/blob/main/images/Tracking.png">
@@ -30,7 +30,7 @@ Figure 1 displays an example of cluster sequences generated on a dynamic graph o
 </p>
  <p align="center"><em>Figure 2 - Three caracteristics to be evaluated for cluster matching.</em></p>
  
-Over the years multiple techniques were introduced in the literature for independent community detection and matching. However, the majority of these methods rely on node membership to perform the matching of the clusters from different timesteps. Green et al. [], one of the earliest techniques, relied on the Jaccard Index as a similarity measure. In this method, the Jaccard index is calculated between the last cluster of each sequence (the fronts) and every cluster in the current timestep. If the Jaccard Index of two clusters is higher than a certain manually defined similarity threshold the clusters are placed in the same sequence. However, looking at the node membership alone might not be sufficient to properly represent the changes in the cluster. Take for example row two of Figure 2. Two clusters from different timesteps can have the same nodes, however, the internal structure of the clusters is completely different. The same can be observed in row three of Figure 2. Two clusters from different timesteps can have the same nodes and same structure, however, the attributes on the nodes have completely changed from one timestep to another. In these two cases, can we consider these clusters as the same evolving cluster? or should they be separated into different sequences? We believe a reliable tracking algorithm should consider all three characteristics: node membership, cluster structure, and cluster attributes to properly represent the identity of the evolving clusters.  
+Over the years multiple techniques were introduced in the literature for independent community detection and matching. However, the majority of these methods rely on node membership to perform the matching of the clusters from different timesteps. Green et al. [5], one of the earliest techniques, relied on the Jaccard Index as a similarity measure. In this method, the Jaccard index is calculated between the last cluster of each sequence (the fronts) and every cluster in the current timestep. If the Jaccard Index of two clusters is higher than a certain manually defined similarity threshold the clusters are placed in the same sequence. However, looking at the node membership alone might not be sufficient to properly represent the changes in the cluster. Take for example row two of Figure 2. Two clusters from different timesteps can have the same nodes, however, the internal structure of the clusters is completely different. The same can be observed in row three of Figure 2. Two clusters from different timesteps can have the same nodes and same structure, however, the attributes on the nodes have completely changed from one timestep to another. In these two cases, can we consider these clusters as the same evolving cluster? or should they be separated into different sequences? We believe a reliable tracking algorithm should consider all three characteristics: node membership, cluster structure, and cluster attributes to properly represent the identity of the evolving clusters.  
 
 
 ## Methodolody
@@ -81,7 +81,7 @@ In every epoch, we sample a random percentage of the edges in the Supergraph. We
 </p>
  <p align="center"><em>Figure 6 - A pruning/reinforcement example.</em></p>
 
-To generate the sequences, we apply FINCH on the embeddings generated by the graph autoencoder trained on the Supergraph. During our testing, we experimented with multiple concepts as well:
+To generate the sequences, we apply FINCH[6] on the embeddings generated by the graph autoencoder trained on the Supergraph. During our testing, we experimented with multiple concepts as well:
 1. Branching: It is the opposite of pruning, where we calculate the distance between the embeddings of two disconnected nodes and connect them during the training if the distance is < 1.
 2. Dynamic pruning rate: Instead of using a fixed pruning rate which can be hard to determine from graph to graph, a dynamic pruning rate is calculated as the |log(edge_Weight)|.
 3. Pruning Patience: If the number of edges that are being pruned is 0 for a consecutive number of epochs, we stop the training.
@@ -98,7 +98,7 @@ Evaluating the sequences remains a challenge that requires further investigation
 
 - For the node membership, we use the Jaccard Index.   
 
-- For the cluster structure, we use NetSimile features []. The NetSimile features are generated by first calculating the topological features for the nodes and arranging them in vector form. Then for every cluster, the topological features vectors of the nodes are aggregated using multiple aggregation functions (Mean, Median, ...). The aggregated features are then concatenated to form the Netsimile features.  
+- For the cluster structure, we use NetSimile features [2]. The NetSimile features are generated by first calculating the topological features for the nodes and arranging them in vector form. Then for every cluster, the topological features vectors of the nodes are aggregated using multiple aggregation functions (Mean, Median, ...). The aggregated features are then concatenated to form the Netsimile features.  
 
 - For the cluster attributes, we calculate the homogeneity between the cluster attributes of every sequence. The cluster attributes are formed by aggregating the attributes of the nodes that form the cluster.  
 
@@ -108,12 +108,12 @@ It is important for any metric that we use to consider all the generated sequenc
 ## Benchmarks
 We compare TrackGAE to three well-known methods for community tracking:
 
-- Green et al[], this method uses the Jaccard Index as a similarity measure and a manually defined similarity threshold. 
-- GED[], this method calculates the Inclusion metric which evaluates the quantity and quality of the compared clusters. The quantity is the Jaccard Index while the quality metric can be any node centrality measure. The Inclusion measure is calculated as the product Quantity x Quality. GED uses two manually defined similarity thresholds alpha and beta. 
-- Mutual Transition [], this method uses a normalized Burt matrix in order to calculate a similarity measure between the clusters. The Mutual Transition score is calculated as the sum of the harmonic mean between the normalized Burt matrix vectors of two clusters. Unlike the other methods, in [] the similarity threshold is derived automatically from the Mutual Transition scores calculated between all clusters.  
+- Green et al[5], this method uses the Jaccard Index as a similarity measure and a manually defined similarity threshold. 
+- GED[3], this method calculates the Inclusion metric which evaluates the quantity and quality of the compared clusters. The quantity is the Jaccard Index while the quality metric can be any node centrality measure. The Inclusion measure is calculated as the product Quantity x Quality. GED uses two manually defined similarity thresholds alpha and beta. 
+- Mutual Transition [7], this method uses a normalized Burt matrix in order to calculate a similarity measure between the clusters. The Mutual Transition score is calculated as the sum of the harmonic mean between the normalized Burt matrix vectors of two clusters. Unlike the other methods, in [7] the similarity threshold is derived automatically from the Mutual Transition scores calculated between all clusters.  
 
 ## Preliminary results
-Below we display some preliminary results with TrackGAE applied on dynamic graphs generated with Dancer[]. Dancer is a tool that allows the user to generate synthetic dynamic graphs with an emphasis on dynamic clusters. The Supergraph images displayed below are generated by Dancer, the IDs of the clusters are highlighted in red.   
+Below we display some preliminary results with TrackGAE applied on dynamic graphs generated with Dancer[1]. Dancer is a tool that allows the user to generate synthetic dynamic graphs with an emphasis on dynamic clusters. The Supergraph images displayed below are generated by Dancer, the IDs of the clusters are highlighted in red.   
 We display the sequences generated by each model, plus the evaluation metrics calculated for each result. We also display the events generated by TrackGAE and the summary of the total events generated by every model.
 
 ### Example 1
@@ -151,7 +151,7 @@ ex.run_experiment(1, 1, 1.0)
 sc.print_results(1)
 ```
 
-For running a TrackGAE on a new Dancer example, the "t.graph" files generated by Dancer should be placed in a new folder and reference by the variable "data_directory".  
+For running a TrackGAE on a new Dancer example, the "t.graph" files generated by Dancer should be placed in a new folder referenced by the variable "data_directory".  
 
 run_expriment takes 3 arguments:  
 - Number of test runs (The result is the mean)
@@ -166,4 +166,10 @@ This work is part of a preliminary research on dynamic graphs done at UQAM (Univ
 Maroun Haddad 2020.
 
 ## References
-
+[1] Benyahia, O., Largeron, C., Jeudy, B. et Zaïane, O. R. (2016). Dancer : Dynamic attributed network with community structure generator. In Machine Learning and Knowledge Discovery in Databases,41–44.  
+[2] Berlingerio, M., Koutra, D., Eliassi-Rad, T. et Faloutsos, C. (2012). Netsi-mile : A scalable approach to size-independent network similarity.  
+[3] Bródka, P., Saganowski, S. et Kazienko, P. (2012). GED : the method for group evolution discovery in social networks.
+[4] Dakiche, N., Tayeb, F. B., Slimani, Y. et Benatchba, K. (2019). Tracking community evolution in social networks : A survey. In Inf. Process. Manag.,56(3), 1084–1102.  
+[5] Greene, D., Doyle, D. et Cunningham, P. (2010). Tracking the evolution of communities in dynamic social networks. In N. Memon et R. Alhajj (dir.). International Conference on Advances in Social Networks Analysis and Mining.  
+[6] Sarfraz, M. S., Sharma, V. et Stiefelhagen, R. (2019). Efficient parameter-freeclustering using first neighbor relations. In IEEE Conference on Computer Vision and Pattern Recognition, CVPR, 8934–8943.  
+[7] Tajeuna, E. G., Bouguessa, M. et Wang, S. (2015). Tracking the evolution ofcommunity structures in time-evolving social networks. In IEEE International Conference on Data Science and Advanced Analytics.  
