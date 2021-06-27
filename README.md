@@ -167,9 +167,9 @@ Maroun Haddad 2020.
 
 ## References
 [1] Benyahia, O., Largeron, C., Jeudy, B. et Zaïane, O. R. (2016). Dancer : Dynamic attributed network with community structure generator. In Machine Learning and Knowledge Discovery in Databases,41–44.  
-[2] Berlingerio, M., Koutra, D., Eliassi-Rad, T. et Faloutsos, C. (2012). Netsi-mile : A scalable approach to size-independent network similarity.  
+[2] Berlingerio, M., Koutra, D., Eliassi-Rad, T. et Faloutsos, C. (2012). Netsimile : A scalable approach to size-independent network similarity.  
 [3] Bródka, P., Saganowski, S. et Kazienko, P. (2012). GED : the method for group evolution discovery in social networks.
 [4] Dakiche, N., Tayeb, F. B., Slimani, Y. et Benatchba, K. (2019). Tracking community evolution in social networks : A survey. In Inf. Process. Manag.,56(3), 1084–1102.  
 [5] Greene, D., Doyle, D. et Cunningham, P. (2010). Tracking the evolution of communities in dynamic social networks. In N. Memon et R. Alhajj (dir.). International Conference on Advances in Social Networks Analysis and Mining.  
-[6] Sarfraz, M. S., Sharma, V. et Stiefelhagen, R. (2019). Efficient parameter-freeclustering using first neighbor relations. In IEEE Conference on Computer Vision and Pattern Recognition, CVPR, 8934–8943.  
+[6] Sarfraz, M. S., Sharma, V. et Stiefelhagen, R. (2019). Efficient parameter-free clustering using first neighbor relations. In IEEE Conference on Computer Vision and Pattern Recognition, CVPR, 8934–8943.  
 [7] Tajeuna, E. G., Bouguessa, M. et Wang, S. (2015). Tracking the evolution ofcommunity structures in time-evolving social networks. In IEEE International Conference on Data Science and Advanced Analytics.  
