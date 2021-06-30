@@ -163,7 +163,7 @@ The scores of each number of runs are saved separately. To display the results, 
 ## Note
 This work is part of a preliminary research on dynamic graphs done at UQAM (University of Quebec at Montreal) under the supervision of Dr. Mohamad Bouguessa.  
   
-Maroun Haddad 2020.
+Maroun Haddad 2020-2021.
 
 ## References
 [1] Benyahia, O., Largeron, C., Jeudy, B. et Zaïane, O. R. (2016). Dancer : Dynamic attributed network with community structure generator. In Machine Learning and Knowledge Discovery in Databases,41–44.  
